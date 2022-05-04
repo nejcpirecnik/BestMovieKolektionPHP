@@ -1,57 +1,75 @@
 <?php 
 
-include 'db.php'; 
-$movieID = $_GET["movie_id"];
-$showID = $_GET['show_id'];
+include 'postgresqlDBConnect.php';
+$movieID = $_GET['movie_id'];
+$movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seat Selector</title>
+    <title>Document</title>
+    <style>
+        .double {
+            zoom: 2;
+            transform: scale(2);
+            -ms-transform: scale(2);
+            -webkit-transform: scale(2);
+            -o-transform: scale(2);
+            -moz-transform: scale(2);
+            transform-origin: 0 0;
+            -ms-transform-origin: 0 0;
+            -webkit-transform-origin: 0 0;
+            -o-transform-origin: 0 0;
+            -moz-transform-origin: 0 0;
+        }
+        #path{
+            background-color: gray;
+        }
+    </style>
 </head>
 <body>
-    <?php 
-    $stmt = $pdo->query("SELECT * FROM movies WHERE movie_id LIKE $movieID");
-    while ($row = $stmt->fetch()) {
-        echo "<b>Movie title:</b> ".$row['name']."<br>".
-             "<b>Movie description:</b> ".$row['description']."<br>";
-    $imageURL = $row['image'];
-    }
-    ?>
-    <img src="<?php echo $imageURL ?>" width="150px" height="200px">
-
-<form method="GET" action="reserveSeatQuery.php">
-  <label for="fname">First name:</label><br>
-  <input type="text" id="fname" name="fname" value="John"><br><br>
-
-  <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname" value="Doe"><br><br>
-
-  <label for="lname">Email:</label><br>
-  <input type="email" id="email" name="email" value="john.doe@mail.com"><br><br>
-
-  <label for="lname">Number of tickets:</label><br>
-  <input type="text" id="number_of_tickets" name="number_of_tickets" value="1"><span>Price:<input readonly type="text" id="cost" name="cost" value="5.99">€</span><br><br>
-
-  <input type="hidden" name="show_id" id="show_id" value="<?php echo $showID;?>">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
-
-<script>
-$("#number_of_tickets").keyup(function(){
-  var val = $(this).val();
-  val = val.replace(/\D/g,'');
-  $('#number_of_tickets').val(val);
-  $("#cost").val(val*5.99);
-});
-
-</script>
-  <input type="submit" value="Submit">
-</form> 
+    <p><b>Selected movie:</b> <?= $movie["name"]; ?></p>
+    <p><b>Price:</b> <?= $movie["price"]; ?>€</p>
+    <form action="selectedSeats.php" method="post">
+        <table>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" id="A1" name="check_list[]" value="A1"></td>
+                    <td><input type="checkbox" id="A2" name="check_list[]" value="A2"></td>
+                    <td id="path">&nbsp;</td>
+                    <td><input type="checkbox" id="A3" name="check_list[]" value="A3"></td>
+                    <td><input type="checkbox" id="A4" name="check_list[]" value="A4"></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="B1" name="check_list[]" value="B1"></td>
+                    <td><input type="checkbox" id="B2" name="check_list[]" value="B2"></td>
+                    <td id="path">&nbsp;</td>
+                    <td><input type="checkbox" id="B3" name="check_list[]" value="B3"></td>
+                    <td><input type="checkbox" id="B4" name="check_list[]" value="B4"></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="C1" name="check_list[]" value="C1"></td>
+                    <td><input type="checkbox" id="C2" name="check_list[]" value="C2"></td>
+                    <td id="path">&nbsp;</td>
+                    <td><input type="checkbox" id="C3" name="check_list[]" value="C3"></td>
+                    <td><input type="checkbox" id="C4" name="check_list[]" value="C4"></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="D1" name="check_list[]" value="D1"></td>
+                    <td><input type="checkbox" id="D2" name="check_list[]" value="D2"></td>
+                    <td id="path">&nbsp;</td>
+                    <td><input type="checkbox" id="D3" name="check_list[]" value="D3"></td>
+                    <td><input type="checkbox" id="D4" name="check_list[]" value="D4"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit">
+    </form>
 </body>
+
 </html>
