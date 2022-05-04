@@ -34,7 +34,7 @@ $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
 </head>
 <body>
     <p><b>Selected movie:</b> <?= $movie["name"]; ?></p>
-    <p><b>Price:</b> <?= $movie["price"]; ?>€</p>
+    <p><b>Price of one ticket:</b> <?= $movie["price"]; ?>€</p>
     <form action="selectedSeats.php" method="post">
         <table>
             <tbody>
@@ -68,6 +68,7 @@ $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
                 </tr>
             </tbody>
         </table>
+        <input type="hidden" name="moviePrice" value="<?= $movie["price"]; ?>">
         <input type="submit">
     </form>
 </body>

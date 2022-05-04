@@ -6,13 +6,13 @@
 
     include "postgresqlDBConnect.php";
 
-    $movieID = $_GET['movie_id'];
-    $movie = $pdo->query("SELECT * FROM movies")->fetch();
+    $moviePrice = $_POST["moviePrice"];
+    $seatCount = count($_POST['check_list']);
+    $totalTicketPrice = $moviePrice*$seatCount;
+    echo "Number of seats: ".$seatCount."<br>Total price:".$totalTicketPrice."<br>"; 
+
 
     $names = empty($_POST['check_list']) ? [] : $_POST['check_list'];
-
-    echo "Selected movie: ".$movie;
-
     foreach($names AS $name){
         if (!empty($name)) {
               $test= '['.implode(", ", (array)$name).']';                    
@@ -25,5 +25,3 @@
              */       
         }
     }
-?>
-
