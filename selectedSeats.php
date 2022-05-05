@@ -9,7 +9,12 @@
     $moviePrice = $_POST["moviePrice"];
     $seatCount = count($_POST['check_list']);
     $totalTicketPrice = $moviePrice*$seatCount;
-    echo "Number of seats: ".$seatCount."<br>Total price:".$totalTicketPrice."<br>"; 
+    ?>
+
+    <p>Selected seats: <?= $seatCount ?></p>
+    <p>Ticket price: <?= $totalTicketPrice ?></p>
+
+    <?php
 
 
     $names = empty($_POST['check_list']) ? [] : $_POST['check_list'];

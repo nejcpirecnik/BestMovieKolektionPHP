@@ -1,8 +1,11 @@
 <?php 
 
 include 'postgresqlDBConnect.php';
+
 $movieFromGet = $_GET['movieID'];
 $movieID = (int)$movieFromGet;
+
+$data = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = movies.id WHERE movies.id = $movieID")->fetchAll();
 
 $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
 
@@ -53,12 +56,22 @@ $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
 					<img src="<?= $movie['image']; ?>" alt="">
 					<div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
-							<div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a></div>
-							<div><a href="https://www.youtube.com/embed/o-0hcF97wy0" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+
+							<div>
+    <?php
+        foreach ($data as $row) { 
+			$dateTime = $row['datetime'];;
+			$date = new DateTime($dateTime);
+			$localDate = $date->format('d-m-Y H:i:s');
+			?>
+		
+            <p><?= $localDate; ?> <a href="">Buy</a></p>
+        <?php } ?>		
+							</div>
 						</div>
-						<div class="btn-transform transform-vertical">
-							<div><a href="reserveSeat.php?movie_id=<?= $movieID ?>" class="item item-1 yellowbtn"> <i class="ion-card"></i> Buy ticket</a></div>
-							<div><a href="reserveSeat.php?movie_id=<?= $movieID ?>" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
+						<div class="btn-transform transform-vertical"><div>
+	
+						</div>
 						</div>
 					</div>
 				</div>

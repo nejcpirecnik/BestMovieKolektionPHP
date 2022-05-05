@@ -3,6 +3,8 @@
 include 'postgresqlDBConnect.php';
 $movieID = $_GET['movie_id'];
 $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
+$data = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = movies.id WHERE movies.id = $movieID")->fetchAll();
+
 
 ?>
 <!DOCTYPE html>
@@ -33,8 +35,11 @@ $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
     </style>
 </head>
 <body>
+
     <p><b>Selected movie:</b> <?= $movie["name"]; ?></p>
     <p><b>Price of one ticket:</b> <?= $movie["price"]; ?>€</p>
+
+
     <form action="selectedSeats.php" method="post">
         <table>
             <tbody>
