@@ -1,10 +1,12 @@
 <?php 
 
-include 'postgresqlDBConnect.php';
-$movieID = $_GET['movie_id'];
-$movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
-$data = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = movies.id WHERE movies.id = $movieID")->fetchAll();
+session_start();
 
+include 'postgresqlDBConnect.php';
+$showID = $_GET['show_id'];
+$movieID = $_GET['movie_id'];
+
+$showsData = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = movies.id WHERE shows.id=$showID")->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -35,10 +37,26 @@ $data = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = mo
     </style>
 </head>
 <body>
+        <?php
+        foreach ($showsData as $row) { 
 
-    <p><b>Selected movie:</b> <?= $movie["name"]; ?></p>
-    <p><b>Price of one ticket:</b> <?= $movie["price"]; ?>€</p>
+            $playTime = $row['datetime'];
 
+            //Storing the playtime into a SESSION
+            $_SESSION['playTime'] = $playTime;
+
+            $date = new DateTime($playTime);
+            $localDate = $date->format('d.m.Y');
+            $localTime = $date->format('H:i');
+
+            $ticketPrice = $row['price'];
+
+            ?>
+        
+            <p>Selected movie: <b><?= $row['name']; ?></b></p>
+            <p>Ticket price: <b><?= $ticketPrice; ?>€</b></p>
+            <p>Play time: <b><?= $localDate ?></b> at <b><?= $localTime ?></b></p>
+        <?php } ?>
 
     <form action="selectedSeats.php" method="post">
         <table>
@@ -73,7 +91,10 @@ $data = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = mo
                 </tr>
             </tbody>
         </table>
-        <input type="hidden" name="moviePrice" value="<?= $movie["price"]; ?>">
+
+        <input type="hidden" name="moviePrice" value="<?= $ticketPrice; ?>">
+        <input type="hidden" name="showID" value="<?= $showID; ?>">
+
         <input type="submit">
     </form>
 </body>

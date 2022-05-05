@@ -1,32 +1,58 @@
 <?php
+
+session_start();
+
 /*
     $var = implode(",", $_POST['check_list']);
     echo $var;
 */
 
-    include "postgresqlDBConnect.php";
+include "postgresqlDBConnect.php";
 
-    $moviePrice = $_POST["moviePrice"];
-    $seatCount = count($_POST['check_list']);
-    $totalTicketPrice = $moviePrice*$seatCount;
-    ?>
+$moviePriceString = $_POST["moviePrice"];
+$showID = $_POST["showID"];
 
-    <p>Selected seats: <?= $seatCount ?></p>
-    <p>Ticket price: <?= $totalTicketPrice ?></p>
+$moviePrice = (float)$moviePriceString;
+$seatCount = count($_POST['check_list']);
+$totalTicketPrice = $moviePrice * $seatCount;
 
-    <?php
+//Setting up a session
+    $_SESSION['seatCount'] = $seatCount;
+    $_SESSION['totalTicketPrice'] = $totalTicketPrice;
+    $_SESSION['selectedShowID'] = $showID;
+?>
 
+<p>Selected seats: <?= $seatCount ?></p>
+<p>Ticket price: <?= $totalTicketPrice ?>€</p>
 
-    $names = empty($_POST['check_list']) ? [] : $_POST['check_list'];
-    foreach($names AS $name){
-        if (!empty($name)) {
-              $test= '['.implode(", ", (array)$name).']';                    
-              print_r($test);
-              /*
-              $sql = "INSERT INTO seats (name) VALUES ('$test')";
-              if ($conn->query($sql) === true) {
-                echo ('ok');
-             }       
-             */       
-        }
-    }
+<?php 
+    //Makes a new seat query.
+    $SeatArray = implode(",", $_POST['check_list']); 
+    echo $SeatArray;
+
+    $sql = "INSERT INTO seats (selected_seat, show_id) VALUES (?,?)";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$SeatArray, $showID]);
+
+    //NEW TICKET SYSTEM
+    // Getting the last generated seat.
+    $stmt = $db->query("SELECT * FROM seats ORDER BY id DESC LIMIT 1");
+    $lastSeat = $stmt->fetch();
+
+    $lastSeatID = $lastSeat['id'];
+
+    //Inserting all the data into a ticket
+    $sql = "INSERT INTO tickets (user_id, seat_id, show_id) VALUES (?,?,?)";
+    $stmt = $db->prepare($sql);
+    $userID = 1;
+    $stmt->execute([$userID, $lastSeatID, $showID]);
+
+    //Getting last tickets ID
+    $lastTicketID = $db->query("SELECT * FROM tickets ORDER BY id DESC LIMIT 1")->fetch();
+
+    //Getting the last ticket ID into a session.
+    $_SESSION['lastTicketID'] = $lastTicketID;
+
+    header("Location:confirmationPage.php");
+
+?>

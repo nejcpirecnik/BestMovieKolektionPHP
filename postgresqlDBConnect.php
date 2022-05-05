@@ -5,7 +5,7 @@ $user = "dwhklgewlkfybc";
 $password = "d484a6cea09c1803c3061b7589147e3e70ad91d8bf0582ea48888f3d4190d915";
 $port = "5432";
 
-$dsn = "pgsql:host=$host;dbname=$dbname;user=$user;port=$port;password=$password";
+$dsn = "pgsql:host=$host;dbname=$dbname;user=$user;port=$port;password=$password sslmode=require";
 
 $db = new PDO($dsn);
 
