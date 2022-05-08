@@ -67,12 +67,12 @@ $_SESSION['movieName'] = $movie['name'];
 					<div class="movie-img sticky-sb">
 						<img src="<?= $movie['image']; ?>" alt="">
 						<div class="movie-btn">
-							<p>Available dates:</p>
+							<p>Available shows:</p>
 							<?php
 							foreach ($data as $row) {								
 								$dateTime = $row['datetime'];
 								$date = new DateTime($dateTime);
-								$localDate = $date->format('d m Y');
+								$localDate = $date->format('d.m.Y');
 								$localTime = $date->format('H:i');
 
 								$showID = $row['id'];
