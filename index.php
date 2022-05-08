@@ -3,11 +3,9 @@
 include "postgresqlDBConnect.php";
 $movieData = $db->query("SELECT * FROM movies")->fetchAll();
 $userData = $db->query("SELECT * FROM users")->fetchAll();
+session_start();
 
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en" class="no-js">

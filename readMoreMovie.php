@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include 'postgresqlDBConnect.php';
 
 $movieFromGet = $_GET['movieID'];
@@ -9,6 +11,7 @@ $data = $db->query("SELECT * FROM shows WHERE movie_id = $movieID")->fetchAll();
 
 $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
 $_SESSION['movieName'] = $movie['name'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">

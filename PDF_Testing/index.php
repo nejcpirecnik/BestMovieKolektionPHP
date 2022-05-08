@@ -7,6 +7,7 @@ $lastTicketID = $_SESSION['lastTicketID'];
 $seatCount = $_SESSION['seatCount'];
 $totalTicketPrice = $_SESSION['totalTicketPrice'];
 $showID = $_SESSION['selectedShowID'];
+$movieName = $_SESSION['movieName'];
 
 $playTime = $_SESSION['playTime'];
 $date = new DateTime($playTime);
@@ -61,16 +62,51 @@ $pdf->SetFont( 'Arial', '', 17 );
 $pdf->Cell( 0, 15, $reportName, 0, 0, 'C' );
 $pdf->Image( $logoFile, $logoXPos, $logoYPos, $logoWidth );
 $pdf->SetTextColor( $textColour[0], $textColour[1], $textColour[2] );
-$pdf->SetFont( 'Arial', '', 20 );
+$pdf->SetFont( 'Arial', 'B', 20 );
 $pdf->Write( 19, "Ticket Confirmation" );
 $pdf->Ln( 16 );
+
 $pdf->SetFont( 'Arial', '', 12 );
-$pdf->Write( 6, "This is a confirmation and a Digital Ticket to our cinema event taking place $localDate at $localTime. You have paid $totalTicketPrice EURO for $seatCount seats. Thank you for being a valued customer!" );
+$pdf->Write( 6, "This is a confirmation and a Digital Ticket for the movie " );
+
+$pdf->SetFont( 'Arial', 'B', 12 );
+$pdf->Write( 6, "$movieName " );
+
+$pdf->SetFont( 'Arial', '', 12 );
+$pdf->Write( 6, "taking place " );
+
+$pdf->SetFont( 'Arial', 'B', 12 );
+$pdf->Write( 6, "$localDate " );
+
+$pdf->SetFont( 'Arial', '', 12 );
+$pdf->Write( 6, "at " );
+
+$pdf->SetFont( 'Arial', 'B', 12 );
+$pdf->Write( 6, "$localTime " );
+
+$pdf->Ln( 12 );
+$pdf->SetFont( 'Arial', '', 12 );
+$pdf->Write( 6, "You have paid " );
+
+$pdf->SetFont( 'Arial', 'B', 12 );
+$pdf->Write( 6, "$totalTicketPrice EUR " );
+
+$pdf->SetFont( 'Arial', '', 12 );
+$pdf->Write( 6, "for " );
+
+$pdf->SetFont( 'Arial', 'B', 12 );
+$pdf->Write( 6, "$seatCount " );
+
+$pdf->Write( 6, "seats" );
+
+$pdf->SetFont( 'Arial', '', 12 );
+$pdf->Write( 6, "." );
+
 $pdf->Ln( 12 );
 $pdf->Write( 6, "Show this barcode at event enterance!" );
 $pdf->Image( $barcodeFile, '15', 80, 75 );
 
-$pdf->Output( "report.pdf", "I" );
+$pdf->Output( "ticket.pdf", "I" );
 
 ?>
 

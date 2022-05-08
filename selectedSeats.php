@@ -20,19 +20,27 @@ $totalTicketPrice = $moviePrice * $seatCount;
     $_SESSION['seatCount'] = $seatCount;
     $_SESSION['totalTicketPrice'] = $totalTicketPrice;
     $_SESSION['selectedShowID'] = $showID;
+
+    $movieName = $_SESSION['movieName'];
 ?>
 
 <p>Selected seats: <?= $seatCount ?></p>
 <p>Ticket price: <?= $totalTicketPrice ?>€</p>
+<p>Movie name: <?= $movieName; ?></p>
 
 <?php 
     //Makes a new seat query.
     $SeatArray = implode(",", $_POST['check_list']); 
-    echo $SeatArray;
+
+    $_SESSION['seatArray'] = $SeatArray;
 
     $sql = "INSERT INTO seats (selected_seat, show_id) VALUES (?,?)";
     $stmt = $db->prepare($sql);
     $stmt->execute([$SeatArray, $showID]);
+
+
+
+
 
     //NEW TICKET SYSTEM
     // Getting the last generated seat.
