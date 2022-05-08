@@ -1,7 +1,9 @@
 <?php
-include '../../postgresqlDBConnect.php';
 
-$movieData = $db->query("SELECT * FROM movies WHERE active = 'true'")->fetchAll();
+include "../../postgresqlDBConnect.php";
+$showID = $_GET['showID'];
+$data = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = shows.movie_id WHERE shows_id = $showID")->fetchAll();
+$allMovies = $db->query("SELECT * FROM movies")->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,19 +12,33 @@ $movieData = $db->query("SELECT * FROM movies WHERE active = 'true'")->fetchAll(
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make Show</title>
+    <title>Edit Show</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
-    <form action="makeShowQuery.php">
-        <label for="selected_movie">Select a movie:</label><br>
-        <select name="movieID" id="movieID">
-            <?php foreach ($movieData as $movieRow) : ?>
-                <option value="<?= $movieRow["id"] ?>"><?= $movieRow["name"] ?></option>
-            <?php endforeach ?>
-        </select><br>
-        <label for="dateSelected">Select when to play:</label><br>
-        <input type="date" name="dateSelected" id="dateSelected"><br>
+    <?php foreach ($data as $row) { 
+        
+        $playDate = $row['date'];
+        $playTime = $row['time'];
+        
+        ?>
+
+        
+
+        <form>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Movie name</label>
+
+                <select name="movieID" id="movieID">
+                    <?php foreach ($allMovies as $movieRow) { ?>
+                        <option value="<?= $movieRow["id"] ?>"><?= $movieRow["name"] ?></option>
+                    <?php } ?>
+                </select>
+
+            </div>
+            <label for="dateSelected">Select when to play:</label><br>
+        <input type="date" name="dateSelected" id="dateSelected" value="<?= $playDate ?>"><br>
         <label for="timeSelected">Time:</label>
         <select name="timeSelected" id="timeSelected">
             <option value="12:00">12:00</option>
@@ -46,10 +62,10 @@ $movieData = $db->query("SELECT * FROM movies WHERE active = 'true'")->fetchAll(
             <option value="21:00">21:00</option>
             <option value="21:30">21:30</option>
             <option value="22:00">22:00</option>
-        </select>
-        <input type="submit" value="Submit">
-
-    </form>
+        </select><br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    <?php } ?>
 </body>
 
 </html>

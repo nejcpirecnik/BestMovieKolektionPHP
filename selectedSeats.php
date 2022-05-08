@@ -39,6 +39,7 @@ $totalTicketPrice = $moviePrice * $seatCount;
     $stmt->execute([$SeatArray, $showID]);
 
 
+    //EMAIL SYSTEM
 
 
 
@@ -60,7 +61,6 @@ $totalTicketPrice = $moviePrice * $seatCount;
 
     //Getting the last ticket ID into a session.
     $_SESSION['lastTicketID'] = $lastTicketID;
-
-    header("Location:confirmationPage.php");
-
+    
+    header("Location:mail.php");
 ?>

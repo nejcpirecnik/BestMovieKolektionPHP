@@ -6,12 +6,12 @@ include 'postgresqlDBConnect.php';
 $showID = $_GET['show_id'];
 $movieID = $_GET['movie_id'];
 
-$showsData = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = movies.id WHERE shows.id=$showID")->fetchAll();
+$showsData = $db->query("SELECT * FROM shows INNER JOIN movies ON shows.movie_id = movies.id WHERE shows_id=$showID")->fetchAll();
 
 $data = $db->query("SELECT selected_seat FROM seats WHERE show_id = $showID")->fetchAll();
 // and somewhere later:
 foreach ($data as $row) {
-    $occupiedSeats[] = $row['selected_seat'];
+       $occupiedSeats[] = $row['selected_seat']; 
 }
 
 $implodedSeats = implode(',', $occupiedSeats);
@@ -49,22 +49,15 @@ $explodedSeats = explode(",", $implodedSeats);
         <?php
         foreach ($showsData as $row) { 
 
-            $playTime = $row['datetime'];
-
-            //Storing the playtime into a SESSION
-            $_SESSION['playTime'] = $playTime;
-
-            $date = new DateTime($playTime);
-            $localDate = $date->format('d.m.Y');
-            $localTime = $date->format('H:i');
-
+            $_SESSION['playDate'] = $row['date'];
+            $_SESSION['playTime'] = $row['time'];
             $ticketPrice = $row['price'];
 
             ?>
         
             <p>Selected movie: <b><?= $_SESSION['movieName']; ?></b></p>
             <p>Ticket price: <b><?= $ticketPrice; ?>€</b></p>
-            <p>Play time: <b><?= $localDate ?></b> at <b><?= $localTime ?></b></p>
+            <p>Playing on <b><?= $_SESSION['playDate']; ?> at <?= $_SESSION['playTime']; ?></b>.</p>
         <?php } ?>
 
     <form action="selectedSeats.php" method="post">

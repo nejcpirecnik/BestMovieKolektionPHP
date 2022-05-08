@@ -69,17 +69,16 @@ $_SESSION['movieName'] = $movie['name'];
 						<div class="movie-btn">
 							<p>Available shows:</p>
 							<?php
-							foreach ($data as $row) {								
-								$dateTime = $row['datetime'];
-								$date = new DateTime($dateTime);
-								$localDate = $date->format('d.m.Y');
-								$localTime = $date->format('H:i');
+							foreach ($data as $row) {		
 
-								$showID = $row['id'];
+								$date = $row['date'];
+								$time = $row['time'];
+
+								$showID = $row['shows_id'];
 							?>
 
 								<h4 class="dates">
-									<?= $localDate." at ".$localTime; ?> <a href="reserveSeat.php?show_id=<?= $showID ?>&movie_id=<?= $movieID ?>">Buy</a>
+									<?= $date." at ".$time; ?> <a href="reserveSeat.php?show_id=<?= $showID ?>&movie_id=<?= $movieID ?>">Buy</a>
 							</h4>
 							<?php } ?>
 						</div>

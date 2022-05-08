@@ -2,17 +2,14 @@
 
 session_start();
 
-$userEmailAddress = 'nejcpirecnik03@mail.com';
-$number_of_tickets = $_SESSION['seatCount'];
-$cost = $_SESSION['totalTicketPrice'];
-
+$userEmailAddress = 'nejcpirecnik03@gmail.com';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
 require 'vendor/autoload.php';
 
 $mail = new PHPMailer();
-$mail->IsSMTP();
+$mail->isSMTP();
 $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 $mail->Host = 'smtp.gmail.com';
 $mail->Port = 465;
@@ -33,14 +30,14 @@ $mail->addAddress($userEmailAddress, $userEmailAddress);
 $mail->Subject = 'Potrditev narocila';
 
 //Body
-$mail->Body = 'Hvala za naročilo! Naročili ste vstopnico z '.$number_of_tickets.' sedeži. Cena vstopnice je '.$cost."€";
+$mail->Body = 'Eyy';
 
 //send the message, check for errors
 if (!$mail->send()) {
     echo 'Mailer Error: ' . $mail->ErrorInfo;
 } else {
     $_SESSION['mail_sent'] = 1;
-    header('location: index.php');
+    header("Location:confirmationPage.php");
 }
 function save_mail($mail)
 {
