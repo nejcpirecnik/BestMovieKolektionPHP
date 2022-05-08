@@ -5,7 +5,7 @@ include "../postgresqlDBConnect.php";
 
 $data = $db->query("SELECT * FROM movies")->fetchAll();
 
-$ShowData = $pdo->query("SELECT * FROM shows")->fetchAll();
+$showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = shows.movie_id")->fetchAll();
 
 ?>
 <!doctype html>
@@ -22,7 +22,7 @@ $ShowData = $pdo->query("SELECT * FROM shows")->fetchAll();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="https://sh16.neoserv.si:2083/cpsess2789234926/viewer/home%2fpirecnik%2fbmk.clovery.si%2fdest%2fimages/BMKlogo.png">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+<link rel="stylesheet" href="showsIndex.css">
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -120,25 +120,44 @@ $ShowData = $pdo->query("SELECT * FROM shows")->fetchAll();
                         <tbody>
                             <tr>
                                 <td class="align-middle">12:00 - 14:00</td>
+                                <!--Movie Script-->
                                 <td>
-                                    <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">Dance</span>
-                                    <div class="margin-10px-top font-size14">9:00-10:00</div>
-                                    <div class="font-size13 text-light-gray">Ivana Wong</div>
+                                <?php
+                                foreach ($showData as $showRow) {
+
+                                  $length = $showRow['length'];
+
+                                  if(($showRow['day_name'] == "Mon") AND (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))){ ?>
+                                   <div class="card" style="padding:5px ;">
+                                   <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?></b></span> 
+                                    <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
+                                    <div class="font-size13 text-light-gray">Length: <?= $length ?>h</div>  
+                                  </div>                                 
+                                  <?php }else{ ?>
+
+                                  <?php } 
+                                }?>
                                 </td>
+                                <!--Movie Script END-->
+                                <!--Movie Script-->
                                 <td>
-                                    <?php
+                                <?php
+                                foreach ($showData as $showRow) {
 
-                                    if($showRow['datetime'])
+                                  $length = $showRow['length'];
 
-                                    foreach ($showData as $showRow) {
-                                        echo $showRow['name']."<br />\n";
-                                    }
-                                    ?>
-                                    <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Yoga</span>
-                                    <div class="margin-10px-top font-size14">9:00-10:00</div>
-                                    <div class="font-size13 text-light-gray">Marta Healy</div>
+                                  if(($showRow['day_name'] == "Tue") AND (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))){ ?>
+                                   <div class="card" style="padding:5px ;">
+                                   <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?></b></span> 
+                                    <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
+                                    <div class="font-size13 text-light-gray">Length: <?= $length ?>h</div>  
+                                  </div>                                 
+                                  <?php }else{ ?>
+
+                                  <?php } 
+                                }?>
                                 </td>
-
+                                <!--Movie Script END-->
                                 <td>
                                     <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Music</span>
                                     <div class="margin-10px-top font-size14">9:00-10:00</div>

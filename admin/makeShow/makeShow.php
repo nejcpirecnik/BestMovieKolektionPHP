@@ -25,7 +25,7 @@ $movieData = $db->query("SELECT * FROM movies")->fetchAll();
         <input type="date" name="dateSelected" id="dateSelected"><br>
         <label for="timeSelected">Time:</label>
         <select name="timeSelected" id="timeSelected">
-            <option value="12:20">12:00</option>
+            <option value="12:00">12:00</option>
             <option value="12:30">12:30</option>
             <option value="13:00">13:00</option>
             <option value="13:30">13:30</option>
