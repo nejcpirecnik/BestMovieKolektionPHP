@@ -29,8 +29,8 @@ session_start();
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
-<body>
-<div class="slider movie-items" style="background-image: url('http://bmk.clovery.si/dest/images/uploads/sliderv2-background.png');">
+<body style="background-image: url('sliderv2-background.png')";>
+<div class="slider movie-items" style="background:transparent;">
 	<div class="container">
 		<div class="row">
 	    	<div  class="slick-multiItemSlider">

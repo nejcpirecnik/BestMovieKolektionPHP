@@ -5,13 +5,12 @@ session_start();
 include 'postgresqlDBConnect.php';
 
 $movieFromGet = $_GET['movieID'];
-$movieID = (int)$movieFromGet;
+$movieID = (int) $movieFromGet;
 
 $data = $db->query("SELECT * FROM shows WHERE movie_id = $movieID")->fetchAll();
 
 $movie = $db->query("SELECT * FROM movies WHERE id=$movieID")->fetch();
 $_SESSION['movieName'] = $movie['name'];
-
 ?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
@@ -47,7 +46,7 @@ $_SESSION['movieName'] = $movie['name'];
 <body>
 	<!--preloading-->
 	<!--end of signup form popup-->
-	<div class="hero mv-single-hero">
+	<div class="hero mv-single-hero" style="background-image: url('sliderv2-background.png'); background-size: auto; background-repeat: repeat;">)">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
@@ -65,74 +64,52 @@ $_SESSION['movieName'] = $movie['name'];
 			<div class="row ipad-width2">
 				<div class="col-md-4 col-sm-12 col-xs-12">
 					<div class="movie-img sticky-sb">
-						<img src="<?= $movie['image']; ?>" alt="">
+						<img src="<?= $movie['image'] ?>" alt="">
 						<div class="movie-btn">
 							<p>Available shows:</p>
+							<?php foreach ($data as $row) {
+
+           $date = $row['date'];
+           $explodedDate = explode('-', $date);
+
+           $showYear = $explodedDate[0];
+           $showMonth = $explodedDate[1];
+           $showDay = $explodedDate[2];
+
+           $showDate = $showDay . '.' . $showMonth . '.' . $showYear;
+
+           $time = $row['time'];
+
+           $showID = $row['shows_id'];
+           ?>
+							<div class="movie-btn">	
+						<div class="btn-transform transform-vertical">
+							<div><a href="reserveSeat.php?show_id=<?= $showID ?>&movie_id=<?= $movieID ?>" class="item item-1 yellowbtn" style="text-decoration:none; color:black;"> <i class="ion-card"></i><?= $showDate ?> - <?= $time ?></a></div>
+							<div><a href="reserveSeat.php?show_id=<?= $showID ?>&movie_id=<?= $movieID ?>" class="item item-2 yellowbtn" style="text-decoration:none; color:black;"><i class="ion-card">Reserve Seat</i></a></div>
+						</div>
+					</div>
 							<?php
-							foreach ($data as $row) {		
-
-								$date = $row['date'];
-								$time = $row['time'];
-
-								$showID = $row['shows_id'];
-							?>
-
-								<h4 class="dates">
-									<?= $date." at ".$time; ?> <a href="reserveSeat.php?show_id=<?= $showID ?>&movie_id=<?= $movieID ?>">Buy</a>
-							</h4>
-							<?php } ?>
+       } ?>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-8 col-sm-12 col-xs-12">
 					<div class="movie-single-ct main-content">
-						<h1 class="bd-hd"><?= $movie['name']; ?></h1>
-						<div class="social-btn">
-							<a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
-							<div class="hover-bnt">
-								<a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
-								<div class="hvr-item">
-									<a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
-									<a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
-									<a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
-									<a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
-								</div>
-							</div>
-						</div>
-						<div class="movie-rate">
-							<div class="rate">
-								<i class="ion-android-star"></i>
-								<p><span>8.1</span> /10<br>
-									<span class="rv">56 Reviews</span>
-								</p>
-							</div>
-							<div class="rate-star">
-								<p>Rate This Movie: </p>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star"></i>
-								<i class="ion-ios-star-outline"></i>
-							</div>
-						</div>
+						<h1 class="bd-hd"><?= $movie['name'] ?></h1>
 						<div class="movie-tabs">
 							<div class="tabs">
 								<ul class="tab-links tabs-mv">
-									<li class="active"><a href="#overview">Overview</a></li>
-									<li><a href="#reviews"> Reviews</a></li>
-									<li><a href="#cast"> Cast & Crew </a></li>
-									<li><a href="#media"> Media</a></li>
-									<li><a href="#moviesrelated"> Related Movies</a></li>
+									<li class="active"><a href="#overview" style="text-decoration:none;">Overview</a></li>
+									<li><a href="#reviews" style="text-decoration:none;"> Reviews</a></li>
+									<li><a href="#cast" style="text-decoration:none;"> Cast & Crew </a></li>
+									<li><a href="#media" style="text-decoration:none;"> Media</a></li>
+									<li><a href="#moviesrelated" style="text-decoration:none;"> Related Movies</a></li>
 								</ul>
 								<div class="tab-content">
 									<div id="overview" class="tab active">
 										<div class="row">
 											<div class="col-md-8 col-sm-12 col-xs-12">
-												<p><?= $movie['description']; ?></p>
+												<p><?= $movie['description'] ?></p>
 												<div class="title-hd-sm">
 													<h4>Videos & Photos</h4>
 													<a href="#" class="time">All 5 Videos & 245 Photos <i class="ion-ios-arrow-right"></i></a>
