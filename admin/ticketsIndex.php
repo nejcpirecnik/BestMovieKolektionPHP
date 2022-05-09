@@ -1,14 +1,13 @@
 <?php 
+
 session_start();
 
 if($_SESSION['adminStatus']!=1){
-  header("Location:admin/adminLogin.php");
+  header("Location:adminLogin.php");
 }
-
-
 include "../postgresqlDBConnect.php";
 
-$data = $db->query("SELECT * FROM movies")->fetchAll();
+$data = $db->query("SELECT * FROM tickets INNER JOIN users ON users.id = tickets.user_id INNER JOIN seats ON seats.id = tickets.seat_id INNER JOIN shows ON shows_id = tickets.show_id")->fetchAll();
 ?>
 <!doctype html>
 <html lang="en">
@@ -51,7 +50,7 @@ $data = $db->query("SELECT * FROM movies")->fetchAll();
 
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="logoutQuery.php">Sign out</a>
+      <a class="nav-link px-3" href="#">Sign out</a>
     </div>
   </div>
 </header>
@@ -63,7 +62,7 @@ $data = $db->query("SELECT * FROM movies")->fetchAll();
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.php">
+          <a class="nav-link" href="index.php">
               <span data-feather="video"></span>
               Movies
             </a>
@@ -75,13 +74,13 @@ $data = $db->query("SELECT * FROM movies")->fetchAll();
             </a>
           </li>
           <li class="nav-item">
-          <a class="nav-link"  href="usersIndex.php">
+          <a class="nav-link" href="usersIndex.php">
               <span data-feather="users"></span>
               Users
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="ticketsIndex.php">
+          <a class="nav-link active" aria-current="page" href="ticketsIndex.php">
               <span data-feather="file-text"></span>
               Tickets
             </a>
@@ -95,21 +94,17 @@ $data = $db->query("SELECT * FROM movies")->fetchAll();
         <div class="btn-toolbar mb-2 mb-md-0">
         </div>
       </div>
-
-
-      <h2>Movies</h2>
+      <h2>Tickets</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
               <th scope="col">ID</th>
+              <th scope="col">User</th>
+              <th scope="col">Seats</th>
+              <th scope="col">Show ID</th>
+              <th scope="col">Date</th>
               <th scope="col"></th>
-              <th scope="col">Movie name</th>
-              <th scope="col">Play time</th>
-              <th scope="col">Rating</th>
-              <th scope="col">Price per seat</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -117,19 +112,11 @@ $data = $db->query("SELECT * FROM movies")->fetchAll();
             foreach ($data as $row) { ?>
               <tr>
               <td><?= $row['id']; ?></td>
-              <td><img src="<?= $row['image']; ?>" width="25px" height="100%"></td>
-              <td><?= $row['name']; ?></td>
-              <td><?= $row['length']; ?>h</td>
-              <td><?= $row['rating']; ?>/10</td>
-              <td><?= $row['price']; ?>€</td>
-              <td>
-                <?php if($row['active'] == 1){
-                    echo "<span style='color:green;'>Active</span>";
-                }else{
-                  echo "<span style='color:red;'>Inactive</span>";
-                } ?>
-              </td>
-              <td><a href="editMovie/editMovie.php?movieID=<?php echo $row['id']; ?>" style="text-decoration: none; color:black;">Edit</a></td>
+              <td><?= $row['email']; ?></td>
+              <td><?= $row['selected_seat']; ?></td>
+              <td><?= $row['show_id']; ?></td>
+              <td><?= $row['date']; ?></td>
+              <td><a href="edituser/editUser.php?userID=<?php echo $row['id']; ?>" target="_blank" style="text-decoration: none; color:black;">Edit</a></td>
             </tr>
           <?php } ?>
           </tbody>

@@ -1,6 +1,9 @@
 <?php
-
 session_start();
+
+if($_SESSION['adminStatus']!=1){
+  header("Location:adminLogin.php");
+}
 include "../postgresqlDBConnect.php";
 
 $data = $db->query("SELECT * FROM movies")->fetchAll();
@@ -60,47 +63,41 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
     <div class="row">
       <!--Sidebar menu-->
       <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-        <div class="position-sticky pt-3">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="index.php">
-                <span data-feather="video"></span>
-                Movies
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="showsIndex.php">
-                <span data-feather="film"></span>
-                Shows
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="users"></span>
-                Users
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                Tickets
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+          <a class="nav-link" href="index.php">
+              <span data-feather="video"></span>
+              Movies
+            </a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="showsIndex.php">
+              <span data-feather="film"></span>
+              Shows
+            </a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="usersIndex.php">
+              <span data-feather="users"></span>
+              Users
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="ticketsIndex.php">
+              <span data-feather="file-text"></span>
+              Tickets
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
       <!--Sidebar menu END-->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group me-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-            </div>
-          </div>
+
         </div>
-
-
-        <h2>Shows</h2>
+        <h2>Shows <span class="btn btn-primary">9.5.2022 - 15.5.2022</span></h2>
         <div class="container">
           <div class="timetable-img text-center">
             <img src="img/content/timetable.png" alt="">
@@ -128,10 +125,18 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))) { ?>
+                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
+
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
                           <div class="font-size13 text-light-gray">Length: <?= $length ?>h</div>
@@ -148,9 +153,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))) { ?>
+                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -167,9 +179,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))) { ?>
+                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -186,9 +205,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Thur") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))) { ?>
+                      if (($showRow['day_name'] == "Thur") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -205,9 +231,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))) { ?>
+                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -242,9 +275,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00"))) { ?>
+                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "12:00") || ($showRow['time'] == "12:30") || ($showRow['time'] == "13:00") || ($showRow['time'] == "13:30") || ($showRow['time'] == "14:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -265,9 +305,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00"))) { ?>
+                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -284,9 +331,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00"))) { ?>
+                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -303,9 +357,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00"))) { ?>
+                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -322,9 +383,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00"))) { ?>
+                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -341,9 +409,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00"))) { ?>
+                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -360,9 +435,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00"))) { ?>
+                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -379,9 +461,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00"))) { ?>
+                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "14:00") || ($showRow['time'] == "14:30") || ($showRow['time'] == "15:00") || ($showRow['time'] == "15:30") || ($showRow['time'] == "16:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -402,9 +491,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00"))) { ?>
+                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -421,9 +517,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00"))) { ?>
+                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -440,9 +543,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00"))) { ?>
+                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -459,9 +569,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00"))) { ?>
+                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -478,9 +595,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00"))) { ?>
+                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -497,9 +621,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00"))) { ?>
+                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -516,9 +647,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00"))) { ?>
+                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "16:00") || ($showRow['time'] == "16:30") || ($showRow['time'] == "17:00") || ($showRow['time'] == "17:30") || ($showRow['time'] == "18:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -539,9 +677,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00"))) { ?>
+                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -558,9 +703,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00"))) { ?>
+                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -577,9 +729,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00"))) { ?>
+                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -596,9 +755,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00"))) { ?>
+                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -615,9 +781,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00"))) { ?>
+                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -634,9 +807,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00"))) { ?>
+                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -653,9 +833,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00"))) { ?>
+                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "18:00") || ($showRow['time'] == "18:30") || ($showRow['time'] == "19:00") || ($showRow['time'] == "19:30") || ($showRow['time'] == "12:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -676,9 +863,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00"))) { ?>
+                      if (($showRow['day_name'] == "Mon") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -695,9 +889,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00"))) { ?>
+                      if (($showRow['day_name'] == "Tue") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -714,9 +915,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00"))) { ?>
+                      if (($showRow['day_name'] == "Wed") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -733,9 +941,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00"))) { ?>
+                      if (($showRow['day_name'] == "Thu") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -752,9 +967,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00"))) { ?>
+                      if (($showRow['day_name'] == "Fri") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -771,9 +993,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00"))) { ?>
+                      if (($showRow['day_name'] == "Sat") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>
@@ -790,9 +1019,16 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
                     <?php
                     foreach ($showData as $showRow) {
 
+                      $date = $showRow['date'];
+                      $explodedDate = explode('-', $date);
+
+                      $showYear = $explodedDate[0];
+                      $showMonth = $explodedDate[1];
+                      $showDay = $explodedDate[2];
+
                       $length = $showRow['length'];
 
-                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00"))) { ?>
+                      if (($showRow['day_name'] == "Sun") and (($showRow['time'] == "20:00") || ($showRow['time'] == "20:30") || ($showRow['time'] == "21:00") || ($showRow['time'] == "21:30") || ($showRow['time'] == "22:00")) and ($showDay <= 15)) { ?>
                         <div class="card" style="padding:5px ;">
                           <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13"><b><?= $showRow['name'] ?> <a href="makeShow/editShow.php?showID=<?= $showRow['shows_id'] ?>" style="color:white ;"><span data-feather="edit"></span></a></b></span>
                           <div class="margin-10px-top font-size14">Starting: <?= $showRow['time'] ?></div>

@@ -29,9 +29,12 @@ session_start();
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
-<body style="background-image: url('sliderv2-background.png')";>
+<body style="background-color:#020d18";>
 <div class="slider movie-items" style="background:transparent;">
 	<div class="container">
+		<div class="row">
+			<h1 style="font-family:Arial; font-weight:700; color:white">CURRENTLY PLAYING</h1>
+		</div>
 		<div class="row">
 	    	<div  class="slick-multiItemSlider">
             <?php foreach ($movieData as $movieRow) { ?>

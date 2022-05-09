@@ -22,7 +22,7 @@ $movieData = $db->query("SELECT * FROM movies WHERE active = 'true'")->fetchAll(
             <?php endforeach ?>
         </select><br>
         <label for="dateSelected">Select when to play:</label><br>
-        <input type="date" name="dateSelected" id="dateSelected"><br>
+        <input type="date" name="dateSelected" id="dateSelected" min='<?= date("Y-m-d"); ?>' max='2022-05-31'><br>
         <label for="timeSelected">Time:</label>
         <select name="timeSelected" id="timeSelected">
             <option value="12:00">12:00</option>

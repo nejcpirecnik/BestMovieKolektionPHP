@@ -23,5 +23,5 @@ $sql = "UPDATE movies SET name=?, description=?, image=?, rating=?, price=?, act
 $stmt= $db->prepare($sql);
 $stmt->execute([$movieName, $movieDescription, $movieImage, $movieRating, $moviePrice, $status, $movieID]);
 
-header("location: editMovie.php")
+header("location: ../index.php")
 ?>

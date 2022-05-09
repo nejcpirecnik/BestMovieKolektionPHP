@@ -17,15 +17,10 @@ $allMovies = $db->query("SELECT * FROM movies")->fetchAll();
 </head>
 
 <body>
-    <?php foreach ($data as $row) { 
-        
+    <?php foreach ($data as $row) {        
         $playDate = $row['date'];
         $playTime = $row['time'];
-        
         ?>
-
-        
-
         <form>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Movie name</label>
@@ -38,7 +33,7 @@ $allMovies = $db->query("SELECT * FROM movies")->fetchAll();
 
             </div>
             <label for="dateSelected">Select when to play:</label><br>
-        <input type="date" name="dateSelected" id="dateSelected" value="<?= $playDate ?>"><br>
+            <input type="date" name="dateSelected" id="dateSelected" value="<?= $playDate ?>" min='<?= date("Y-m-d"); ?>' max='2022-05-31'><br>
         <label for="timeSelected">Time:</label>
         <select name="timeSelected" id="timeSelected">
             <option value="12:00">12:00</option>
@@ -63,6 +58,7 @@ $allMovies = $db->query("SELECT * FROM movies")->fetchAll();
             <option value="21:30">21:30</option>
             <option value="22:00">22:00</option>
         </select><br>
+        <input type="hidden" id="showID" name="showID" value="<?= $showID; ?>">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     <?php } ?>
