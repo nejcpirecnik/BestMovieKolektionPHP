@@ -11,7 +11,7 @@ session_start();
 <html lang="en" class="no-js">
 <head>
 	<!-- Basic need -->
-	<title>Open Pediatrics</title>
+	<title>Best Movie Kolektion</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="">
 	<meta name="keywords" content="">

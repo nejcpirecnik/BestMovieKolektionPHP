@@ -63,13 +63,13 @@ $showData = $db->query("SELECT * FROM shows INNER JOIN movies ON movies.id = sho
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="index.php">
                 <span data-feather="video"></span>
                 Movies
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">
+              <a class="nav-link active" aria-current="page" href="showsIndex.php">
                 <span data-feather="film"></span>
                 Shows
               </a>

@@ -64,7 +64,7 @@ $data = $db->query("SELECT * FROM movies")->fetchAll();
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="#">
+            <a class="nav-link"  href="showsIndex.php">
               <span data-feather="film"></span>
               Shows
             </a>
