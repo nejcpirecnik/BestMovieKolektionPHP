@@ -32,8 +32,13 @@ It would probably be a good idea you take a look at all the files and change eve
 ### [PDO](https://www.php.net/manual/en/intro.pdo.php)
 We've used PDO to manipulate with the database. PDO is an acronym for PHP Data Objects. PDO is a lean, consistent way to access databases. This means developers can write portable code much easier. PDO is not an abstraction layer like PearDB. PDO is a more like a data access layer which uses a unified API (Application Programming Interface).
 
+![image](https://user-images.githubusercontent.com/29843306/167558786-1898a1f5-3cb8-4ec9-91f6-c4f0511aeaba.png)
+
+
 ### [FPDF](http://www.fpdf.org/)
 FPDF is a PHP class which allows to generate PDF files with pure PHP, that is to say without using the PDFlib library. F from FPDF stands for Free: you may use it for any kind of usage and modify it to suit your needs. FPDF requires no extension (except Zlib to enable compression and GD for GIF support). The latest version requires at least PHP 5.1 and is compatible with PHP 7 and PHP 8.
+
+![image](https://learninfinity.info/wp-content/uploads/2017/05/PHP-PDF-Generation-using-FPDF-1200x900.jpg)
 
 ### [PHP Mailer](https://github.com/PHPMailer/PHPMailer)
 Many PHP developers need to send email from their code. The only PHP function that supports this directly is mail(). However, it does not provide any assistance for making use of popular features such as encryption, authentication, HTML messages, and attachments.
@@ -44,9 +49,14 @@ The PHP mail() function usually sends via a local mail server, typically fronted
 
 Please don't be tempted to do it yourself – if you don't use PHPMailer, there are many other excellent libraries that you should look at before rolling your own. Try SwiftMailer , Laminas/Mail, ZetaComponents etc.
 
+![image](https://www.easycharter.aero/wp-content/uploads/2020/05/php-mailer-with-abstract-background.jpg)
+
 ### [AWS](https://aws.amazon.com/what-is-aws/)
 Amazon Web Services (AWS) is the world’s most comprehensive and broadly adopted cloud platform, offering over 200 fully featured services from data centers globally. Millions of customers—including the fastest-growing startups, largest enterprises, and leading government agencies—are using AWS to lower costs, become more agile, and innovate faster.
 
+### [CSV Export](https://en.wikipedia.org/wiki/Comma-separated_values)
+
+SCV Export has been written in vanilla PHP by hand. I almost died making it.
 ## Final thoughts
 This was a pain.
 
